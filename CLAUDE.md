@@ -51,9 +51,16 @@ Model (app/models/) - SQLAlchemy ORM
 Database (SQLite/PostgreSQL)
 ```
 
-### 인증 및 의존성 시스템
+### 인증 시스템
 
-`app/api/deps.py`에서 정의:
+- JWT 토큰은 httpOnly 쿠키(`access_token`, `refresh_token`)에 저장
+- 인증 흐름: 쿠키 → `get_token_from_cookie()` → `verify_token()` → User 조회
+- JWT `sub` 클레임에서 user_id를 int로 변환하여 사용
+- 비밀번호 해싱: passlib + bcrypt
+
+### 의존성 주입 (`app/api/deps.py`)
+
+`Annotated[Type, Depends(...)]` 패턴 사용:
 
 | 의존성 | 용도 |
 |--------|------|
@@ -63,21 +70,26 @@ Database (SQLite/PostgreSQL)
 | `DbSession` | 비동기 DB 세션 |
 | `get_*_service(db)` | 서비스 레이어 인스턴스 |
 
-JWT 토큰은 httpOnly 쿠키(`access_token`)에 저장
+### 에러 처리 (`app/core/exceptions.py`)
+
+커스텀 예외 계층: `AppException` → `AuthenticationError`(401), `AuthorizationError`(403), `NotFoundError`(404), `ValidationError`(422), `ConflictError`(409)
+
+응답 방식이 요청 타입에 따라 다름:
+- HTMX 요청 → HTML 조각 (HX-Retarget/HX-Reswap 헤더 포함)
+- API 요청 (`/api/*`) → JSON (`{"error": True, "message": "...", "detail": {...}}`)
+- 페이지 요청 → 렌더링된 에러 템플릿
+
+### 서비스 레이어 패턴
+
+- 모든 서비스는 `AsyncSession`을 주입받아 사용
+- `db.flush()` → `db.refresh()` 순서로 사용 (`commit`은 세션 관리에서 자동 처리)
+- `get_or_404()` 패턴: 리소스 없으면 `NotFoundError` 발생
 
 ### HTMX 패턴
 
-파셜 라우터가 HTML 조각 반환:
+파셜 라우터가 HTML 조각 반환. Form 데이터는 `Form()` 사용 (JSON body 아님):
 
 ```python
-# 파셜 응답
-return templates.TemplateResponse(
-    request=request,
-    name="partials/items/item.html",
-    context={"item": item},
-)
-
-# Form 데이터 수신
 @router.post("", response_class=HTMLResponse)
 async def create_item(
     title: str = Form(...),
@@ -96,10 +108,17 @@ response.headers["HX-Trigger"] = json.dumps({
 
 커스텀 Jinja2 필터: `datetime`, `date`, `truncate`, `currency`, `nl2br`
 
+### 데이터베이스
+
+- 비동기 엔진: SQLite(`aiosqlite`), PostgreSQL(`asyncpg`) 지원
+- PostgreSQL 사용 시 DB 자동 생성 (`ensure_database_exists()`)
+- 모든 모델은 `BaseModel` 상속 → `id`(PK) + `created_at`/`updated_at` 자동 포함
+- 테스트는 별도 SQLite DB(`test.db`) 사용, `get_db` 의존성을 오버라이드
+
 ## 새 기능 추가 순서
 
-1. `app/models/` - SQLAlchemy 모델
-2. `app/schemas/` - Pydantic 스키마
+1. `app/models/` - SQLAlchemy 모델 + alembic 마이그레이션
+2. `app/schemas/` - Pydantic 스키마 (Base, Create, Update, Response 패턴)
 3. `app/services/` - 비즈니스 로직
 4. `app/api/v1/` - REST API
 5. `app/partials/` - HTMX 파셜
@@ -112,6 +131,7 @@ response.headers["HX-Trigger"] = json.dumps({
 | `app/api/deps.py` | 의존성 주입 (CurrentUser, DbSession 등) |
 | `app/core/templates.py` | Jinja2 설정, 커스텀 필터 |
 | `app/core/security.py` | JWT 생성/검증, 비밀번호 해싱 |
+| `app/core/exceptions.py` | 커스텀 예외 클래스 및 핸들러 |
 | `app/config.py` | Pydantic Settings 환경 설정 |
 | `templates/base.html` | 기본 레이아웃 (HTMX, Alpine.js 포함) |
 | `static/js/app.js` | 토스트 핸들러, HTMX 이벤트 처리 |
@@ -119,7 +139,6 @@ response.headers["HX-Trigger"] = json.dumps({
 ## 주의사항
 
 - 기본 포트는 **8001** (8000 아님)
-- 비동기 DB: `aiosqlite` 사용
 - 순환 import 방지: `TYPE_CHECKING` 블록 사용
-- 테스트는 별도 DB(`test.db`) 사용
 - 테스트 픽스처: `client`, `auth_client`, `test_user`, `db_session` (`conftest.py`)
+- 스키마에서 비밀번호 필드는 응답에 절대 포함하지 않음

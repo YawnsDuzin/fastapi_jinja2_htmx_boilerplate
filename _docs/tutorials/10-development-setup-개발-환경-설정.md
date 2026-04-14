@@ -516,7 +516,7 @@ pytest --cov=app --cov-report=html
 pytest --cov=app --cov-fail-under=80
 
 # 특정 파일 제외
-pytest --cov=app --cov-omit="app/core/config.py"
+pytest --cov=app --cov-omit="app/config.py"
 ```
 
 **설정** (`pyproject.toml`):
@@ -525,7 +525,7 @@ pytest --cov=app --cov-omit="app/core/config.py"
 [tool.coverage.run]
 source = ["app"]
 omit = [
-    "app/core/config.py",
+    "app/config.py",
     "*/tests/*",
     "*/__pycache__/*",
 ]
@@ -972,6 +972,4 @@ pip install --no-cache-dir -r requirements.txt
 
 ## 10. 다음 단계
 
-- 🧪 [테스트 가이드](./11-testing-guide.md) - 테스트 작성법
-- 🚀 [배포 가이드](./12-deployment-guide.md) - 프로덕션 배포
-- 📖 [API 레퍼런스](./13-api-reference.md) - API 문서
+- 📖 [API 레퍼런스](./13-api-reference-API-레퍼런스.md) - API 문서

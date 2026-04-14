@@ -218,7 +218,7 @@ if __name__ == "__main__":
 
 ### 2.2 핵심 설정 파일
 
-#### `app/core/config.py` - 환경 설정
+#### `app/config.py` - 환경 설정
 
 ```python
 """
@@ -262,7 +262,7 @@ class Settings(BaseSettings):
 settings = Settings()
 ```
 
-#### `app/core/database.py` - 데이터베이스 설정
+#### `app/database.py` - 데이터베이스 설정
 
 ```python
 """
@@ -638,7 +638,7 @@ class ItemService:
 
 #### 템플릿 상속 예시
 
-**`templates/pages/items/index.html`**:
+**`templates/pages/items.html`**:
 
 ```html
 {% extends "base.html" %}
@@ -778,6 +778,5 @@ class ItemService:
 
 ## 6. 다음 단계
 
-- 🔧 [개발 환경 설정](./10-development-setup.md) - IDE, 도구 설정
-- 🧪 [테스트 가이드](./11-testing-guide.md) - 테스트 작성법
-- 🏗️ [아키텍처](./08-architecture.md) - 시스템 구조 이해
+- 🔧 [개발 환경 설정](./10-development-setup-개발-환경-설정.md) - IDE, 도구 설정
+- 🏗️ [아키텍처](./08-architecture-아키텍처-설명.md) - 시스템 구조 이해

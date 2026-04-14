@@ -28,7 +28,7 @@ from app.api.v1.router import api_router
 from app.config import settings
 from app.core.exceptions import setup_exception_handlers
 from app.core.templates import templates
-from app.database import close_db, init_db
+from app.database import close_db, ensure_database_exists, init_db
 from app.pages.router import pages_router
 from app.partials.router import partials_router
 
@@ -66,6 +66,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     # Startup (앱 시작 시 실행)
     # =========================================================================
     print("🚀 애플리케이션 시작 중...")
+    await ensure_database_exists()  # PostgreSQL DB 자동 생성
     await init_db()  # DB 엔진 생성 및 테이블 초기화
     print("✅ 데이터베이스 초기화 완료")
 

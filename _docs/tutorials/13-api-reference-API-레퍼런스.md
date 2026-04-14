@@ -795,6 +795,5 @@ app = FastAPI(
 
 ## 9. 다음 단계
 
-- 🏗️ [아키텍처](./08-architecture.md) - 시스템 구조 이해
-- 🔧 [개발 환경 설정](./10-development-setup.md) - 도구 설정
-- 🧪 [테스트 가이드](./11-testing-guide.md) - 테스트 작성법
+- 🏗️ [아키텍처](./08-architecture-아키텍처-설명.md) - 시스템 구조 이해
+- 🔧 [개발 환경 설정](./10-development-setup-개발-환경-설정.md) - 도구 설정
