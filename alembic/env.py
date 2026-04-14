@@ -13,7 +13,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
-from app.database import Base
+from app.database import Base, ensure_database_exists
 
 # Import all models to ensure they are registered
 from app.models import User, Item  # noqa: F401
@@ -65,6 +65,8 @@ def do_run_migrations(connection: Connection) -> None:
 
 async def run_async_migrations() -> None:
     """Run migrations in 'online' mode with async engine."""
+    await ensure_database_exists()
+
     connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

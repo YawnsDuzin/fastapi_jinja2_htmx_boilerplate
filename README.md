@@ -43,8 +43,10 @@ cp .env.example .env
 # 데이터베이스 마이그레이션
 alembic upgrade head
 
-# 개발 서버 실행
-uvicorn app.main:app --reload
+# 개발 서버 실행 (포트 8001)
+python run.py
+# 또는
+uvicorn app.main:app --reload --port 8001
 ```
 
 ### Docker 실행
@@ -77,19 +79,20 @@ docker-compose --profile dev up
 
 ## 문서
 
-상세한 문서는 [docs/](./docs/) 폴더를 참조하세요.
+상세한 문서는 [docs/](./_docs/) 폴더를 참조하세요.
 
-- [프로젝트 개요](./docs/01-project-overview.md)
-- [빠른 시작 가이드](./docs/02-quick-start.md)
-- [FastAPI 가이드](./docs/03-fastapi-guide.md)
-- [Jinja2 가이드](./docs/04-jinja2-guide.md)
-- [HTMX 가이드](./docs/05-htmx-guide.md)
-- [Alpine.js 가이드](./docs/06-alpinejs-guide.md)
-- [SQLAlchemy 가이드](./docs/07-sqlalchemy-guide.md)
-- [아키텍처 설명](./docs/08-architecture.md)
-- [디렉토리 구조](./docs/09-directory-structure.md)
-- [개발 환경 설정](./docs/10-development-setup.md)
-- [API 레퍼런스](./docs/13-api-reference.md)
+- [프로젝트 개요](./_docs/01-project-overview.md)
+- [빠른 시작 가이드](./_docs/02-quick-start.md)
+- [FastAPI 가이드](./_docs/03-fastapi-guide.md)
+- [Jinja2 가이드](./_docs/04-jinja2-guide.md)
+- [HTMX 가이드](./_docs/05-htmx-guide.md)
+- [Alpine.js 가이드](./_docs/06-alpinejs-guide.md)
+- [SQLAlchemy 가이드](./_docs/07-sqlalchemy-guide.md)
+- [아키텍처 설명](./_docs/08-architecture.md)
+- [디렉토리 구조](./_docs/09-directory-structure.md)
+- [개발 환경 설정](./_docs/10-development-setup.md)
+- [API 레퍼런스](./_docs/13-api-reference.md)
+- [용어 사전](./_docs/glossary.md)
 
 ## API 엔드포인트
 
@@ -120,6 +123,7 @@ SECRET_KEY=your-secret-key
 DATABASE_URL=sqlite+aiosqlite:///./app.db
 JWT_SECRET_KEY=your-jwt-secret
 JWT_ACCESS_TOKEN_EXPIRE_MINUTES=60
+JWT_REFRESH_TOKEN_EXPIRE_DAYS=7
 ```
 
 ## 테스트

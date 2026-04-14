@@ -172,7 +172,7 @@ async def items_page(
     items = await service.get_multi(owner_id=current_user.id)
 
     return templates.TemplateResponse(
-        "pages/items/index.html",
+        "pages/items.html",
         {
             "request": request,
             "items": items,
@@ -833,7 +833,7 @@ templates/
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │              {% block content %}                            │ │
 │  │  ┌──────────────────────────────────────────────────────┐ │ │
-│  │  │                pages/items/index.html                 │ │ │
+│  │  │                pages/items.html                 │ │ │
 │  │  │  (extends base.html)                                  │ │ │
 │  │  │                                                       │ │ │
 │  │  │  ┌────────────────────────────────────────────────┐ │ │ │
@@ -1076,7 +1076,5 @@ app/
 
 ## 10. 다음 단계
 
-- 📁 [디렉토리 구조](./09-directory-structure.md) - 파일별 상세 설명
-- 🔧 [개발 환경 설정](./10-development-setup.md) - 에디터, 도구 설정
-- 🧪 [테스트 가이드](./11-testing-guide.md) - 테스트 작성법
-- 🚀 [배포 가이드](./12-deployment-guide.md) - 프로덕션 배포
+- 📁 [디렉토리 구조](./09-directory-structure-디렉토리-구조.md) - 파일별 상세 설명
+- 🔧 [개발 환경 설정](./10-development-setup-개발-환경-설정.md) - 에디터, 도구 설정

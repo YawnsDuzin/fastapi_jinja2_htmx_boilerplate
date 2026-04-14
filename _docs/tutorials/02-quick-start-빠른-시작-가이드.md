@@ -827,8 +827,8 @@ sudo dphys-swapfile swapon
 
 ## 15. 다음 단계
 
-1. 📁 [디렉토리 구조](./09-directory-structure.md) 이해하기
-2. 🚀 [FastAPI 가이드](./03-fastapi-guide.md) 읽기
-3. 🔄 [HTMX 가이드](./05-htmx-guide.md)로 동적 UI 구현
-4. 🎨 [Jinja2 가이드](./04-jinja2-guide.md)로 템플릿 작성
-5. 🗄️ [SQLAlchemy 가이드](./07-sqlalchemy-guide.md)로 DB 작업
+1. 📁 [디렉토리 구조](./09-directory-structure-디렉토리-구조.md) 이해하기
+2. 🚀 [FastAPI 가이드](./03-fastapi-guide-FastAPI-가이드.md) 읽기
+3. 🔄 [HTMX 가이드](./05-htmx-guide-HTMX-가이드.md)로 동적 UI 구현
+4. 🎨 [Jinja2 가이드](./04-jinja2-guide-Jinja2-템플릿-가이드.md)로 템플릿 작성
+5. 🗄️ [SQLAlchemy 가이드](./07-sqlalchemy-guide-SQLAlchemy-가이드.md)로 DB 작업
